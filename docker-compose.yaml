@@ -34,8 +34,8 @@ services:
     command: /start.sh
     restart: on-failure
     # hot-reloading
-    volumes:
-      - ./src/:/news-crawler-app/
+#    volumes:
+#      - ./src/:/news-crawler-app/
     networks:
       - proxynet
 
