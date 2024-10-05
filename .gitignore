@@ -1,0 +1,14 @@
+/Datasets Analysis/team_distro_venv
+
+venv
+.envs
+
+.idea
+.DS_Store
+
+__pycache__
+.cache
+
+log
+logs
+*.log

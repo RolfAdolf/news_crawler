@@ -1,0 +1,51 @@
+version: '3.3'
+
+
+volumes:
+  news_crawler_db_data:
+
+
+networks:
+  proxynet:
+    driver: bridge
+
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/nginx/Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - news-crawler-app
+    networks:
+      - proxynet
+    restart: on-failure
+
+  news-crawler-app:
+    build:
+      context: .
+      dockerfile: ./compose/Dockerfile
+    ports:
+      - "8888:8888"
+    env_file:
+      - .envs/.app
+    command: /start.sh
+    restart: on-failure
+    # hot-reloading
+    volumes:
+      - ./src/:/news-crawler-app/
+    networks:
+      - proxynet
+
+  news-crawler-db:
+    image: postgres:15
+    env_file:
+      - .envs/.db
+    ports:
+      - "5432:5432"
+    volumes:
+      - news_crawler_db_data:/var/lib/postgresql/data
+    networks:
+      - proxynet
